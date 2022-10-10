@@ -1,0 +1,91 @@
+body {
+    background-color: #aaaaaa !important;
+}
+a {
+    color: blue;
+    text-decoration: none; /* no underline */
+}
+.main-page-text {
+    text-align: center;
+}
+.home-page-main {
+    margin-top: 100px !important;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+.home-page-main-content {
+    min-height: 250px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #fff;
+    flex-direction: column;
+    line-height: 250px;
+    font-size: 50px;
+}
+
+.main-page-links {
+    display: block;
+    margin-bottom: 30px;
+    color: purple;
+}
+.user_times_data {
+    margin-bottom: 20px;
+    border: 1px solid #ffff;
+    width: 50%;
+    text-align: center;
+}
+.main-user-list {
+    margin-top: 50px;
+}
+.user-from-list {
+    margin-top: 20px;
+}
+.set-time-companies {
+    font-size: 20px;
+}
+@media screen and (max-width: 600px) {
+    .main {
+        max-width: 80%;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .header {
+        height: 35vh;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .main-scanner {
+        height: 30vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .main-scanner a {
+        font-size: 80px;
+    }
+    .main-stats {
+        height: 20vh;
+        margin-top: 40px;
+    }
+    .main-stats a {
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+        background-color: purple;
+        color: white;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 5px;
+    }
+    .footer {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

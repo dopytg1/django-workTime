@@ -1,0 +1,37 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import UserManager
+
+class CustomUserManager(UserManager):
+    def create_user(self, username, email=None, password=None, **extra_fields):
+        return self._create_user(username, email, password, **extra_fields)
+
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
+        return self._create_user(username, email, password, **extra_fields)
+
+# Create your models here.
+class CustomUser(AbstractUser):
+    is_member = models.BooleanField("member status", default=False)
+    is_company = models.BooleanField("company status", default=False)
+
+    objects = CustomUserManager()
+
+
+class Company(models.Model):
+    company = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+    start_time = models.TimeField(null=True)
+    end_time = models.TimeField(null=True)
+
+
+class Member(models.Model):
+    member = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+    company_id = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+
+
+class WorkTime(models.Model):
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+    member_id = models.ForeignKey(Member, on_delete=models.CASCADE)
+    created_at = models.DateField()

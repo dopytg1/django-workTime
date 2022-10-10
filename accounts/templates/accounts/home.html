@@ -1,0 +1,10 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1 class="main-page-text">Are you a Company or Member of a company?</h1>
+<div class="home-page-main">
+    <a href="{% url 'login' %}" class="main-member home-page-main-content">Member</a>
+    <a href="{% url 'comp_signup' %}" class="main-company home-page-main-content">Company</a>
+</div>
+{% endblock %}

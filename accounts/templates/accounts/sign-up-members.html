@@ -1,0 +1,19 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}register{% endblock %}
+
+{% block content %}
+<form method="POST" class="form-group">
+    {% csrf_token %}
+    <label for="">Username: {{ form.username }}</label>
+    <label for="">Password1: {{ form.password1 }}</label>
+    <label for="">Password2: {{ form.password2 }}</label>
+    <label for="">Email: {{ form.email }}</label>
+    
+    {{ form.errors }}
+    
+    
+    <button type="submit" class="btn btn-success">Register</button>
+    {{ request.user.company.company }}
+</form>
+{% endblock %}

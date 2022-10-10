@@ -1,0 +1,22 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Home page{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="header">
+        <div class="header-inside">
+            <h1 class="">Zeon it hub (interns)</h1>
+            <p>{{ request.user }}</p>
+        </div>
+    </div>
+    <div class="main-scanner">
+        <a href="#">Scan</a>
+    </div>
+    <div class="main-stats">
+        <a href="#">моя статистика</a>
+    </div>
+    <div class="footer">v.0.0.1</div>
+</div>
+
+{% endblock %}

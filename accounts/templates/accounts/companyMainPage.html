@@ -1,0 +1,19 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Home page{% endblock %}
+
+{% block content %}
+<a href="{% url 'setTime' %}" class="set-time-companies">set time</a>
+<a href="{% url 'mem_signup' %}" class="main-page-links">Member sign-up(only by companies)</a>
+
+<div class="main-user-list">
+    <h1>Users</h1>
+    {% for each in data %}
+    <div class="user-from-list">
+        <a href="{% url 'userWorktime' user=each.member %}">{{ each.member }}</a>
+        
+    </div>
+     
+    {% endfor %}
+</div>
+{% endblock %}

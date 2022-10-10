@@ -1,0 +1,18 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+{{ company.company }}
+<form class="container" method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>start time</label>
+        <input type="time" class="form-control" name="start_time"/>
+    </div>
+    <div class="mb-3">
+        <label>end time</label>
+        <input type="time" class="form-control" name="end_time"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
