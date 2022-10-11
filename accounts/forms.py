@@ -2,6 +2,7 @@ from dataclasses import fields
 from urllib import request
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.db import transaction
 from .models import *

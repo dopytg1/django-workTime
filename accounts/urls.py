@@ -8,6 +8,7 @@ urlpatterns = [
     path("logout", logoutUser, name="logout"),
 
     path("", homePage, name="homePage"),
+    path("accounts/", redirectBasedOnUsers, name='UserProfilePage'),
     path("accounts/member", accountMemberPage, name='UserProfilePage'),
     path("accounts/company", accountCompanyPage, name='CompanyProfilePage'),
     path("accounts/company/change", companySetTime, name='setTime'),
