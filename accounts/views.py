@@ -2,7 +2,7 @@ from django.shortcuts import render
 from urllib import request
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, View
 from django.contrib.auth.views import LoginView
 
 from .forms import MemberCreationForm, LoginUserForm, CompanyCreationForm
@@ -10,7 +10,9 @@ from .models import Company, CustomUser, WorkTime, Member
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse, reverse_lazy
 from .permissions import *
+from datetime import datetime
 
 
 class MemberSignUpForm(CompanyRequiredMixin ,LoginRequiredMixin, CreateView):
@@ -96,3 +98,28 @@ def redirectBasedOnUsers(request):
         return redirect("/accounts/company")
     if request.user.is_member == True:
         return redirect("/accounts/member")
+
+@member_allowed()
+def createWorkTime(request):
+    member = Member.objects.get(member=request.user.id)
+    try:
+        workTime = WorkTime.objects.get(flag=False)
+    except:
+        workTime = False
+
+    if request.method == "POST":
+        if workTime:
+            workTime.end_time = datetime.now().strftime("%H:%M")
+            workTime.flag = True
+            workTime.save()
+            return redirect("/accounts/member")
+        else:
+            workTime = WorkTime()
+            workTime.company_id = member.company_id
+            workTime.member_id = request.user.member
+            workTime.start_time = datetime.now().strftime("%H:%M")
+            workTime.save()
+            return redirect("/accounts/member")
+    return render(request, "accounts/workTimeCreate.html", {"member": member})
+
+

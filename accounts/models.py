@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
@@ -30,9 +31,9 @@ class Member(models.Model):
 
 
 class WorkTime(models.Model):
-    start_time = models.TimeField()
-    end_time = models.TimeField()
+    flag = models.BooleanField(default=False)
+    start_time = models.TimeField(null=True)
+    end_time = models.TimeField(null=True)
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE)
-    created_at = models.DateField()
-    
+    created_at = models.DateField(auto_now=True)

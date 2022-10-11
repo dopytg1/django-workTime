@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="main-scanner">
-        <a href="#">Scan</a>
+        <a href="{% url 'createWorkTime' %}">Scan</a>
     </div>
     <div class="main-stats">
         <a href="#">моя статистика</a>
@@ -20,3 +20,37 @@
 </div>
 
 {% endblock %}
+
+
+<!-- class WorkTimeView(CreateView):
+    model = WorkTime
+    form_class = WorkTimeForm
+    template_name = 'accounts/workTimeCreate.html'
+    success_url = reverse_lazy('accounts/member')
+
+    def get_form_kwargs(self):
+        kwargs = super(WorkTimeView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs -->
+
+
+<!-- class WorkTimeForm(ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super(WorkTimeForm, self).__init__(*args, **kwargs)
+        self.user = user
+
+    class Meta:
+        model = WorkTime
+        fields = '__all__'
+        # widgets = {'any_field': HiddenInput(),}
+
+    @transaction.atomic
+    def save(self):
+        workTime = WorkTime.objects.create()
+        workTime.company_id = self.user.company_id
+        workTime.save()
+        workTime.member_id = self.user.id
+        workTime.save()
+        # member.company_id = self.company
+        # member.save()
+        return workTime -->
