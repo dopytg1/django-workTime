@@ -3,17 +3,24 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-<a href="{% url 'setTime' %}" class="set-time-companies">set time</a>
-<a href="{% url 'mem_signup' %}" class="main-page-links">Sign up your members</a>
+<div class="main-company-page-interact">
+    <a href="{% url 'setTime' %}" class="set-time-companies btn btn-primary">set time</a>
+    <a href="{% url 'mem_signup' %}" class="set-time-companies btn btn-primary">Sign up your members</a>
+</div>
 
-<div class="main-user-list">
+<div class="main-user-list ">
     <h1>Users</h1>
-    {% for each in data %}
-    <div class="user-from-list">
-        <a href="{% url 'userWorktime' user=each.member %}">{{ each.member }}</a>
+    <div class="row row-cols-1 row-cols-md-2  row-cols-lg-3 row-cols-xl-2 g-4">
+
+        {% for each in data %}
         
+        <div class="alert alert-warning mt-5 user-from-list fs-5 text-muted col">
+            <p>Username: {{ each.member }}</p>
+            <p>Name: {{ each.member.first_name }} Surname: {{ each.member.last_name }}</p>
+            <a class="btn btn-primary" href="{% url 'userWorktime' user=each.member %}">See stats</a>
+        </div>
+         
+        {% endfor %}
     </div>
-     
-    {% endfor %}
 </div>
 {% endblock %}

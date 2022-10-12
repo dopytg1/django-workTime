@@ -5,7 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.db import transaction
+from django.forms import ModelForm, TextInput, Textarea
 from .models import *
+from django.urls import reverse,reverse_lazy
 
 class MemberCreationForm(UserCreationForm):
     def __init__(self, company, *args, **kwargs):
@@ -14,7 +16,33 @@ class MemberCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'password1', 'password2', 'email']
+        fields = ['username', 'password1', 'password2', 'email', 'first_name', 'last_name']
+        widgets = {
+            'username': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите название'
+        }),
+            'password1': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        }),
+            'password2': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        }),
+            'email': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        }),
+            'first_name': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        }),
+            'last_name': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        }),
+        }
 
     @transaction.atomic
     def save(self):

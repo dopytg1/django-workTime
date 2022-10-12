@@ -3,7 +3,7 @@ body {
 }
 a {
     color: blue;
-    text-decoration: none; /* no underline */
+    text-decoration: none !important; /* no underline */
 }
 .main-page-text {
     text-align: center;
@@ -24,7 +24,7 @@ a {
     border: 1px solid #fff;
     flex-direction: column;
     line-height: 250px;
-    font-size: 50px;
+    font-size: 30px;
 }
 
 .main-page-links {
@@ -40,14 +40,39 @@ a {
 }
 .main-user-list {
     margin-top: 50px;
+    text-align: center;
 }
 .user-from-list {
     margin-top: 20px;
+    padding: 15px;
+    border: 1px solid;
+    width: 40% !important;
+    margin: 0 auto;
 }
 .set-time-companies {
     font-size: 20px;
+    margin-left: 20px;
 }
-@media screen and (max-width: 600px) {
+.header-inside h1{
+    text-transform: capitalize;
+}
+.login-main {
+    text-align: center;
+    margin-top: 30vh;
+}
+.main-company-page-interact {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+.nav-right {
+    display: flex;
+}
+.nav-right-main {
+    margin-right: 30px;
+}
+/* @media screen and (max-width: 600px) { */
     .main {
         max-width: 80%;
         margin: 0 auto;
@@ -88,4 +113,4 @@ a {
         left: 50%;
         transform: translate(-50%, -50%);
     }
-}
+/* } */

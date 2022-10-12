@@ -1,0 +1,15 @@
+{% extends 'accounts/base.html' %}
+{% load static %}
+
+{% block content %}
+{% for each in data %}
+<div class="user_times_data">
+    <div class="user-data-inside">
+        <p>{{ each.member_id.member }}</p>
+        <p>Came:{{ each.start_time }}</p>
+        <p>Left: {{ each.end_time }}</p>
+        <p>{{ each.created_at }}</p>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

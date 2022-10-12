@@ -1,0 +1,22 @@
+{
+  "name": "modulesapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dopytg1/django-workTime.git"
+  },
+  "author": "Tima",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dopytg1/django-workTime/issues"
+  },
+  "homepage": "https://github.com/dopytg1/django-workTime#readme",
+  "description": "",
+  "devDependencies": {
+    "html5-qrcode": "^2.2.1"
+  }
+}

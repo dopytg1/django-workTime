@@ -15,11 +15,11 @@ from .permissions import *
 from datetime import datetime
 
 
-class MemberSignUpForm(CompanyRequiredMixin ,LoginRequiredMixin, CreateView):
+class MemberSignUpForm(CompanyRequiredMixin , CreateView):
     model = CustomUser
     form_class = MemberCreationForm
     template_name = "accounts/sign-up-members.html"
-    login_url = "login"
+    success_url = reverse_lazy('CompanyProfilePage')
 
     def get_form_kwargs(self):
         kwargs = super(MemberSignUpForm, self).get_form_kwargs()
@@ -43,6 +43,13 @@ class LoginUser(LoginView):
     template_name = 'accounts/login.html'
     
 
+def redirectBasedOnUsers(request):
+    if request.user.is_company == True:
+        return redirect("/accounts/company")
+    if request.user.is_member == True:
+        return redirect("/accounts/member")
+
+
 def logoutUser(request):
     logout(request)
     return redirect("login")
@@ -54,7 +61,9 @@ def homePage(request):
 
 @member_allowed()
 def accountMemberPage(request):
-    return render(request, "accounts/userMainPage.html", {"hello": "hello"})
+    member = Member.objects.get(member=request.user.id)
+    
+    return render(request, "accounts/userMainPage.html", {"member": member})
 
 
 class AccountCompanyPage(CompanyRequiredMixin, LoginRequiredMixin, ListView):
@@ -93,17 +102,11 @@ def companySeeUserStat(request, user):
     return render(request, "accounts/userStat.html", {"data": data})
 
 
-def redirectBasedOnUsers(request):
-    if request.user.is_company == True:
-        return redirect("/accounts/company")
-    if request.user.is_member == True:
-        return redirect("/accounts/member")
-
 @member_allowed()
 def createWorkTime(request):
     member = Member.objects.get(member=request.user.id)
     try:
-        workTime = WorkTime.objects.get(flag=False)
+        workTime = WorkTime.objects.get(flag=False, member_id=member)
     except:
         workTime = False
 
@@ -122,4 +125,10 @@ def createWorkTime(request):
             return redirect("/accounts/member")
     return render(request, "accounts/workTimeCreate.html", {"member": member})
 
+@member_allowed()
+def seeUserStats(request):
+    member = Member.objects.get(member=request.user.id)
+    data = WorkTime.objects.filter(member_id=member)
+    return render(request, "accounts/userStat.html", {"data": data})
 
+            

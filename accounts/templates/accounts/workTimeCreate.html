@@ -1,11 +1,13 @@
 {% extends 'accounts/base.html' %}
 {% load static %}
 
+{% block title %}workTime{% endblock %}
 {% block content %}
 <form method="POST" class="form-group">
     {% csrf_token %}
     <!-- {{ form.as_p }} -->
     {{ request.user }}
+    <div id="qr-reader" style="width: 600px"></div>
     <button type="submit" class="btn btn-success">Register</button>
 </form>
 {% endblock %}

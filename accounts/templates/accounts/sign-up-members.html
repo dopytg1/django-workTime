@@ -3,17 +3,35 @@
 {% block title %}register{% endblock %}
 
 {% block content %}
-<form method="POST" class="form-group">
+<form class="container" method="POST">
     {% csrf_token %}
-    <label for="">Username: {{ form.username }}</label>
-    <label for="">Password1: {{ form.password1 }}</label>
-    <label for="">Password2: {{ form.password2 }}</label>
-    <label for="">Email: {{ form.email }}</label>
-    
-    {{ form.errors }}
-    
-    
-    <button type="submit" class="btn btn-success">Register</button>
-    {{ request.user.company.company }}
-</form>
+    <div class="alert alert-warning mt-5">
+        <label for="exampleInputEmail1" class="form-label">Username:</label>
+        {{ form.username }}
+    </div>
+    <div class="alert alert-warning mt-5">
+        <label for="exampleInputPassword1" class="form-label">Password1:</label>
+        {{ form.password1 }}
+    </div>
+    <div class="alert alert-warning mt-5">
+        <label for="exampleInputPassword1" class="form-label">Password2:</label>
+        {{ form.password2 }}
+    </div>
+    <div class="alert alert-warning mt-5">
+        <label for="exampleInputPassword1" class="form-label">Email:</label>
+        {{ form.email }}
+    </div>
+    <div class="alert alert-warning mt-5">
+        <label for="exampleInputPassword1" class="form-label">First name:</label>
+        {{ form.first_name }}
+    </div>
+    <div class="alert alert-warning mt-5">
+        <label for="exampleInputPassword1" class="form-label">Last name:</label>
+        {{ form.last_name }}
+    </div>
+    <div class="mt-5">
+        {{ form.errors }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 {% endblock %}
