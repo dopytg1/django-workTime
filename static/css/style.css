@@ -72,49 +72,65 @@ a {
 .nav-right-main {
     margin-right: 30px;
 }
-/* @media screen and (max-width: 600px) { */
-    .main {
-        max-width: 80%;
-        margin: 0 auto;
-        text-align: center;
-    }
-    .header {
-        height: 35vh;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-    }
-    .main-scanner {
-        height: 30vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .main-scanner a {
-        font-size: 80px;
-    }
-    .main-stats {
-        height: 20vh;
-        margin-top: 40px;
-    }
-    .main-stats a {
-        display: block;
-        width: 80%;
-        margin: 0 auto;
-        background-color: purple;
-        color: white;
-        height: 40px;
-        line-height: 40px;
-        border-radius: 5px;
-    }
-    .footer {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .sign_company_main {
-        text-align: center;
-        margin-top: 30px;
-    }
-/* } */
+
+.main {
+    max-width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+.header {
+    height: 35vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+.main-scanner {
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main-scanner a {
+    font-size: 100px;
+}
+.main-stats {
+    height: 20vh;
+    margin-top: 40px;
+}
+.main-stats a {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    background-color: purple;
+    color: white;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 5px;
+}
+.footer {
+    text-align: center;
+}
+.sign_company_main {
+    text-align: center;
+    margin-top: 30px;
+}
+.user_stats_main {
+    width: 90%;
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+.user_stat {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 20px 0;
+}
+.stat_main {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+.userStats {
+    margin-top: 30px;
+}

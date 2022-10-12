@@ -6,8 +6,8 @@
 <div class="main">
     <div class="header">
         <div class="header-inside">
-            <h1 class="">{{ member.company_id.company }}</h1>
-            <p>{{ request.user }}</p>
+            <h1 style="font-size: 60px;">{{ member.company_id.company }}</h1>
+            <p style="text-transform: capitalize; font-size: 30px;">{{ request.user.first_name }} {{ request.user.last_name }}</p>
         </div>
     </div>
     <div class="main-scanner">
@@ -16,7 +16,7 @@
     <div class="main-stats">
         <a href="{% url 'seeUserStats' %}">моя статистика</a>
     </div>
-    <div class="footer">v.0.0.1</div>
+    <div class="footer"> <p>v.0.0.1</p> </div>
 </div>
 
 {% endblock %}

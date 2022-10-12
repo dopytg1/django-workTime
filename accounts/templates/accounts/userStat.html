@@ -2,14 +2,38 @@
 {% load static %}
 
 {% block content %}
-{% for each in data %}
-<div class="user_times_data">
-    <div class="user-data-inside">
-        <p>{{ each.member_id.member }}</p>
-        <p>Came:{{ each.start_time }}</p>
-        <p>Left: {{ each.end_time }}</p>
-        <p>{{ each.created_at }}</p>
-    </div>
+<div class="userStats container">
+    <!-- {{ totalTime }} -->
+    <h2>Total worktime: {{ totalTime }}</h2>
+
 </div>
-{% endfor %}
+<div class="user_stats_main">
+    <div class="user_stat">
+        <div class="stat_main"><h4>Date</h4></div>
+        <div class="stat_main"><h4>Came</h4></div>
+        <div class="stat_main"><h4>Left</h4></div>
+        <div class="stat_main"><h4>worked</h4></div>
+    </div>
+    {% for each in data %}
+    <hr>
+    <div class="user_stat">
+        <div class="stat_main">
+            <h4>{{ each.created_at }}</h4>
+        </div>
+        <div class="stat_main">
+            <h4>{{ each.start_time  }}</h4>
+        </div>
+        <div class="stat_main">
+            {% if each.end_time %}
+                <h4>{{ each.end_time }}</h4>
+            {% endif %}
+        </div>
+        <div class="stat_main">
+            {% if each.worked %}
+                <h4>{{ each.worked }}</h4>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

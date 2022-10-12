@@ -37,3 +37,4 @@ class WorkTime(models.Model):
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE)
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
+    worked = models.FloatField(null=True)

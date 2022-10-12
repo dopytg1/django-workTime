@@ -124,7 +124,7 @@ def changeUser(request, id):
             return render(request, "accounts/userChange.html", {"task": user})
     
     except CustomUser.DoesNotExist:
-        return HttpResponseNotFound("<h2>Goal not found</h2>")
+        return HttpResponseNotFound("<h2>User not found</h2>")
 
 
 @member_allowed()
@@ -134,12 +134,14 @@ def createWorkTime(request):
         workTime = WorkTime.objects.get(flag=False, member_id=member)
     except:
         workTime = False
-
     if request.method == "POST":
         if workTime:
             workTime.end_time = datetime.now().strftime("%H:%M")
             workTime.flag = True
             workTime.save()
+            action = WorkTime.objects.get(worked=None, flag=True)
+            action.worked = abs(round(((action.end_time.hour*60 + action.end_time.minute) - (action.start_time.hour*60 + action.start_time.minute)) / 60, 2))
+            action.save()
             return redirect("/accounts/member")
         else:
             workTime = WorkTime()
@@ -151,8 +153,13 @@ def createWorkTime(request):
     return render(request, "accounts/workTimeCreate.html", {"member": member})
 
 @member_allowed()
-def seeUserStats(request, id):
-    member = Member.objects.get(id=id)
+def seeUserStats(request):
+    member = Member.objects.get(member=request.user)
     data = WorkTime.objects.filter(member_id=member)
-    return render(request, "accounts/userStat.html", {"data": data})
-
+    totalTime = 0
+    for each in data:
+        try:
+            totalTime += each.worked
+        except:
+            pass
+    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2)})
