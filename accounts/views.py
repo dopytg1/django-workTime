@@ -7,7 +7,7 @@ from django.contrib.auth.views import LoginView
 
 from .forms import MemberCreationForm, LoginUserForm, CompanyCreationForm
 from .models import Company, CustomUser, WorkTime, Member
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
@@ -31,11 +31,7 @@ class CompanySignUpForm(CreateView):
     model = CustomUser
     form_class = CompanyCreationForm
     template_name = "accounts/sign-up-companies.html"
-
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return redirect('member:quiz_list')
+    success_url = reverse_lazy("login")
 
 
 class LoginUser(LoginView):
@@ -102,6 +98,35 @@ def companySeeUserStat(request, user):
     return render(request, "accounts/userStat.html", {"data": data})
 
 
+@company_allowed()
+def deleteUser(request, id):
+    try:
+        user = CustomUser.objects.get(id=id)
+        user.delete()
+        return redirect("/accounts/company")
+    except CustomUser.DoesNotExist:
+        return HttpResponseNotFound("<h2>Person not found</h2>")
+
+
+@company_allowed()
+def changeUser(request, id):
+    try:
+        user = CustomUser.objects.get(id=id)
+
+        if request.method == 'POST':
+            user.username = request.POST.get('username')
+            user.first_name = request.POST.get('first_name')
+            user.last_name = request.POST.get('last_name')
+            user.save()
+
+            return redirect("/accounts/company")
+        else:
+            return render(request, "accounts/userChange.html", {"task": user})
+    
+    except CustomUser.DoesNotExist:
+        return HttpResponseNotFound("<h2>Goal not found</h2>")
+
+
 @member_allowed()
 def createWorkTime(request):
     member = Member.objects.get(member=request.user.id)
@@ -126,9 +151,8 @@ def createWorkTime(request):
     return render(request, "accounts/workTimeCreate.html", {"member": member})
 
 @member_allowed()
-def seeUserStats(request):
-    member = Member.objects.get(member=request.user.id)
+def seeUserStats(request, id):
+    member = Member.objects.get(id=id)
     data = WorkTime.objects.filter(member_id=member)
     return render(request, "accounts/userStat.html", {"data": data})
 
-            

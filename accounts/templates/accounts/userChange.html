@@ -1,0 +1,22 @@
+{% extends "accounts/base.html" %}
+
+{% block title %}Change User{% endblock %}
+
+{% block content %}
+<form class="container" method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">New username: </label>
+        <input class="form-control" type="text" name="username" value="" />
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">New first name:</label>
+        <input class="form-control" type="text" name="first_name" value="" />
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">New last name:</label>
+        <input class="form-control" type="text" name="last_name" value="" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

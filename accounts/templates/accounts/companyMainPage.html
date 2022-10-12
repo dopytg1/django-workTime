@@ -16,8 +16,10 @@
         
         <div class="alert alert-warning mt-5 user-from-list fs-5 text-muted col">
             <p>Username: {{ each.member }}</p>
-            <p>Name: {{ each.member.first_name }} Surname: {{ each.member.last_name }}</p>
-            <a class="btn btn-primary" href="{% url 'userWorktime' user=each.member %}">See stats</a>
+            <p style="text-transform: capitalize;">{{ each.member.first_name }} {{ each.member.last_name }}</p>
+            <a href="{% url 'userWorktime' id=each.member.id %}" class="btn btn-primary">See stats</a>
+            <a href="{% url 'changeUser' id=each.member.id %}" class="btn btn-warning">Change user</a>
+            <a href="{% url 'deleteUser' id=each.member.id %}" class="btn btn-danger">Delete user</a>
         </div>
          
         {% endfor %}

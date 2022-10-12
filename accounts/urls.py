@@ -13,7 +13,9 @@ urlpatterns = [
 
     path("accounts/company", accountCompanyPage, name='CompanyProfilePage'),
     path("accounts/company/change", companySetTime, name='setTime'),
-    path("accounts/company/<str:user>", companySeeUserStat, name='userWorktime'),
+    path("accounts/company/<int:id>", companySeeUserStat, name='userWorktime'),
+    path("accounts/company/delete/<int:id>", deleteUser, name='deleteUser'),
+    path("accounts/company/change/<int:id>", changeUser, name='changeUser'),
 
     path("accounts/member/create", createWorkTime, name="createWorkTime"),
     path("accounts/member/stats", seeUserStats, name="seeUserStats"),

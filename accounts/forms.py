@@ -59,6 +59,24 @@ class CompanyCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['username', 'password1', 'password2', 'email']
+        widgets = {
+            'username': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите название'
+        }),
+            'password1': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        }),
+            'password2': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        }),
+            'email': TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Введите описание'
+        })
+        }
 
 
     @transaction.atomic

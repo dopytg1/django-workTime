@@ -113,4 +113,8 @@ a {
         left: 50%;
         transform: translate(-50%, -50%);
     }
+    .sign_company_main {
+        text-align: center;
+        margin-top: 30px;
+    }
 /* } */

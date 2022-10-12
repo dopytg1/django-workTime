@@ -3,10 +3,30 @@
 {% block title %}register{% endblock %}
 
 {% block content %}
-<form method="POST" class="form-group">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Register</button>
-    {{ request.user.is_company }}
-</form>
+    <div class="sign_company_main">
+        <h2>Create your own company, keep track of your members' attendance</h2>
+    </div>
+    <form class="container" method="POST">
+        {% csrf_token %}
+        <div class="alert alert-warning mt-5">
+            <label for="exampleInputEmail1" class="form-label">Username:</label>
+            {{ form.username }}
+        </div>
+        <div class="alert alert-warning mt-5">
+            <label for="exampleInputPassword1" class="form-label">Password1:</label>
+            {{ form.password1 }}
+        </div>
+        <div class="alert alert-warning mt-5">
+            <label for="exampleInputPassword1" class="form-label">Password2:</label>
+            {{ form.password2 }}
+        </div>
+        <div class="alert alert-warning mt-5">
+            <label for="exampleInputPassword1" class="form-label">Email:</label>
+            {{ form.email }}
+        </div>
+        <div class="mt-5">
+            {{ form.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 {% endblock %}
