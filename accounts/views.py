@@ -95,7 +95,13 @@ def companySetTime(request):
 def companySeeUserStat(request, user):
     member = Member.objects.get(member__username=user)
     data = WorkTime.objects.filter(member_id=member)
-    return render(request, "accounts/userStat.html", {"data": data})
+    totalTime = 0
+    for each in data:
+        try:
+            totalTime += each.worked
+        except:
+            pass
+    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2)})
 
 
 @company_allowed()
@@ -139,7 +145,7 @@ def createWorkTime(request):
             workTime.end_time = datetime.now().strftime("%H:%M")
             workTime.flag = True
             workTime.save()
-            action = WorkTime.objects.get(worked=None, flag=True)
+            action = WorkTime.objects.get(worked=None, flag=True, member_id=member)
             action.worked = abs(round(((action.end_time.hour*60 + action.end_time.minute) - (action.start_time.hour*60 + action.start_time.minute)) / 60, 2))
             action.save()
             return redirect("/accounts/member")
@@ -149,6 +155,13 @@ def createWorkTime(request):
             workTime.member_id = request.user.member
             workTime.start_time = datetime.now().strftime("%H:%M")
             workTime.save()
+            action = WorkTime.objects.get(flag=False, member_id=member)
+            company = action.company_id
+            if action.start_time > company.start_time:
+                action.on_time = False
+            else:
+                action.on_time = True
+            action.save()
             return redirect("/accounts/member")
     return render(request, "accounts/workTimeCreate.html", {"member": member})
 
@@ -162,4 +175,4 @@ def seeUserStats(request):
             totalTime += each.worked
         except:
             pass
-    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2)})
+    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "member": member})

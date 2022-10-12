@@ -3,9 +3,7 @@
 
 {% block content %}
 <div class="userStats container">
-    <!-- {{ totalTime }} -->
     <h2>Total worktime: {{ totalTime }}</h2>
-
 </div>
 <div class="user_stats_main">
     <div class="user_stat">
@@ -16,24 +14,45 @@
     </div>
     {% for each in data %}
     <hr>
-    <div class="user_stat">
-        <div class="stat_main">
-            <h4>{{ each.created_at }}</h4>
+    {% if each.on_time %}
+        <div style="color: green;" class="user_stat">
+            <div class="stat_main">
+                <h4>{{ each.created_at }}</h4>
+            </div>
+            <div class="stat_main">
+                <h4>{{ each.start_time  }}</h4>
+            </div>
+            <div class="stat_main">
+                {% if each.end_time %}
+                    <h4>{{ each.end_time }}</h4>
+                {% endif %}
+            </div>
+            <div class="stat_main">
+                {% if each.worked %}
+                    <h4>{{ each.worked }}</h4>
+                {% endif %}
+            </div>
         </div>
-        <div class="stat_main">
-            <h4>{{ each.start_time  }}</h4>
+    {% else %}
+        <div style="color: red;" class="user_stat">
+            <div class="stat_main">
+                <h4>{{ each.created_at }}</h4>
+            </div>
+            <div class="stat_main">
+                <h4>{{ each.start_time  }}</h4>
+            </div>
+            <div class="stat_main">
+                {% if each.end_time %}
+                    <h4>{{ each.end_time }}</h4>
+                {% endif %}
+            </div>
+            <div class="stat_main">
+                {% if each.worked %}
+                    <h4>{{ each.worked }}</h4>
+                {% endif %}
+            </div>
         </div>
-        <div class="stat_main">
-            {% if each.end_time %}
-                <h4>{{ each.end_time }}</h4>
-            {% endif %}
-        </div>
-        <div class="stat_main">
-            {% if each.worked %}
-                <h4>{{ each.worked }}</h4>
-            {% endif %}
-        </div>
-    </div>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

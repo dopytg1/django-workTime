@@ -38,3 +38,4 @@ class WorkTime(models.Model):
     member_id = models.ForeignKey(Member, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now=True)
     worked = models.FloatField(null=True)
+    on_time = models.BooleanField(null=True)
