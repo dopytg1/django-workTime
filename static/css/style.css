@@ -66,6 +66,9 @@ a {
     display: flex;
     justify-content: center;
     margin-top: 30px;
+    flex-direction: column;
+    width: 40%;
+    margin: 0 auto;
 }
 .nav-right {
     display: flex;
@@ -141,4 +144,11 @@ a {
 #qr-reader {
     margin: 0 auto;
     margin-top: 30px;
+}
+.input-group {
+    justify-content: center !important;
+    margin-bottom: 70px;
+}
+.set-time-companies {
+    margin-top: 20px;
 }

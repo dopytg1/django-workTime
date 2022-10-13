@@ -3,14 +3,21 @@
 {% block title %}Home page{% endblock %}
 
 {% block content %}
-<div class="main-company-page-interact">
-    <a href="{% url 'setTime' %}" class="set-time-companies btn btn-primary">set time and your private key (important)</a>
-    <a href="{% url 'mem_signup' %}" class="set-time-companies btn btn-primary">Sign up your members</a>
-    <a href="{% url 'searchUsers' %}" class="set-time-companies btn btn-primary">Search users</a>
-</div>
 
 <div class="main-user-list ">
     <h1>Users</h1>
+    <form method=POST action="{% url 'searchUsers' %}">
+        {% csrf_token %}
+        <div class="input-group">
+            <div class="form-outline">
+              <input placeholder="Search Users" aria-label="Search" type="search" id="form1" class="form-control" name="searched"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form> 
+    {% if searched %}
+            <p>You Searched For <span style="font-weight: bold; color: green;">{{ searched }}</span></p> 
+    {% endif %}
     <div class="row row-cols-1 row-cols-md-2  row-cols-lg-3 row-cols-xl-2 g-4">
         {% for each in data %}
         

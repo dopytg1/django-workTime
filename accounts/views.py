@@ -20,7 +20,7 @@ class MemberSignUpForm(CompanyRequiredMixin , CreateView):
     model = CustomUser
     form_class = MemberCreationForm
     template_name = "accounts/sign-up-members.html"
-    success_url = reverse_lazy('CompanyProfilePage')
+    success_url = reverse_lazy('CompanyProfilePage', kwargs={'page': 1})
 
     def get_form_kwargs(self):
         kwargs = super(MemberSignUpForm, self).get_form_kwargs()
@@ -72,6 +72,20 @@ class AccountCompanyPage(CompanyRequiredMixin, LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['data'] = Member.objects.filter(company_id=self.request.user.id)
         return context
+
+
+@company_allowed()
+def searchUsers(request):
+    if request.method == "POST":
+        searched = request.POST.get("searched")
+        company = Company.objects.get(company=request.user)
+        data = Member.objects.filter(description__contains=searched, company_id=company)
+
+        return render(request, "accounts/searchUsers.html", {"searched": searched, "data": data})
+    else:
+        # data = Member.objects.filter(description__contains="firstname")
+        return render(request, "accounts/searchUsers.html", {})
+
 
 @company_allowed()
 def accountCompanyPage(request, page=1):
@@ -131,7 +145,7 @@ def deleteUser(request, id):
     try:
         user = CustomUser.objects.get(id=id)
         user.delete()
-        return redirect("/accounts/company")
+        return redirect("/accounts/company/1")
     except CustomUser.DoesNotExist:
         return HttpResponseNotFound("<h2>Person not found</h2>")
 

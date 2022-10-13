@@ -29,6 +29,7 @@ class Company(models.Model):
 class Member(models.Model):
     member = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    description = models.TextField(blank=True, null=True)
 
 
 class WorkTime(models.Model):

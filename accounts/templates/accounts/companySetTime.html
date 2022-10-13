@@ -2,18 +2,17 @@
 {% load static %}
 
 {% block content %}
-{{ company.company }}
 <form class="container" method="POST">
     {% csrf_token %}
-    <div class="mb-3">
+    <div class="mb-3 alert alert-warning" style="margin-top: 20px;">
         <label>start time</label>
         <input type="time" class="form-control" name="start_time"/>
     </div>
-    <div class="mb-3">
+    <div class="mb-3 alert alert-warning">
         <label>end time</label>
         <input type="time" class="form-control" name="end_time"/>
     </div>
-    <div class="mb-3">
+    <div class="mb-3 alert alert-warning">
         <label>secret key</label>
         <input type="text" class="form-control" name="secret_key"/>
     </div>

@@ -51,6 +51,9 @@ class MemberCreationForm(UserCreationForm):
         user.save()
         member = Member.objects.create(member=user)
         member.company_id = self.company
+        user = member.member
+        desc = getattr(user, 'username') + getattr(user, 'email') + getattr(user, 'first_name') + getattr(user, 'last_name')
+        member.description = desc
         member.save()
         return member
 
