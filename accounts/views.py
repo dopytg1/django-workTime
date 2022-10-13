@@ -160,8 +160,10 @@ def changeUser(request, id):
             user.first_name = request.POST.get('first_name')
             user.last_name = request.POST.get('last_name')
             user.save()
-
-            return redirect("/accounts/company")
+            member = Member.objects.get(member=user)
+            member.description = request.POST.get('username') + request.POST.get('first_name') + request.POST.get('last_name') + user.email
+            member.save()
+            return redirect("/accounts/company/1")
         else:
             return render(request, "accounts/userChange.html", {"task": user})
     
