@@ -23,6 +23,7 @@ class Company(models.Model):
     company = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
+    secret_key = models.CharField(max_length=200, null=True)
 
 
 class Member(models.Model):

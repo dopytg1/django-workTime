@@ -84,9 +84,10 @@ class CompanyCreationForm(UserCreationForm):
         user = super(CompanyCreationForm, self).save(request)
         user.is_company = True
         user.save()
-        member = Company.objects.create(company=user)
-        member.save()
-        return member
+        company = Company.objects.create(company=user)
+        company.secret_key = "hello"
+        company.save()
+        return company
 
 
 class LoginUserForm(AuthenticationForm):

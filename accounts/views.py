@@ -67,6 +67,7 @@ class AccountCompanyPage(CompanyRequiredMixin, LoginRequiredMixin, ListView):
     model = Member
     context_object_name = 'data'
     template_name = "accounts/companyMainPage.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['data'] = Member.objects.filter(company_id=self.request.user.id)
@@ -90,9 +91,10 @@ def companySetTime(request):
     if request.method == 'POST':
         company.start_time = request.POST.get("start_time")
         company.end_time = request.POST.get("end_time")
+        company.secret_key = request.POST.get("secret_key")
         company.save()
 
-        return HttpResponseRedirect("accounts/profile/company")
+        return redirect("/accounts/company/1")
     else:
         return render(request, "accounts/companySetTime.html", {"error": error, "company": company})
 
@@ -183,7 +185,7 @@ def createWorkTime(request):
                 action.on_time = True
             action.save()
             return redirect("/accounts/member")
-    return render(request, "accounts/workTimeCreate.html", {"member": member})
+    return render(request, "accounts/workTimeCreate.html", {"member": member, "company": member.company_id})
 
 
 @member_allowed()

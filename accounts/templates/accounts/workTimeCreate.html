@@ -3,9 +3,11 @@
 
 {% block title %}workTime{% endblock %}
 {% block content %}
-<form method="POST" class="form-group">
+<form method="POST" class="form-group" action="http://localhost:8000/accounts/member">
     {% csrf_token %}
-    <div id="qr-reader" style="width: 600px"></div>
-    <button type="submit" class="btn btn-success">Register</button>
+    <input type=hidden id="token" name="abcName" value="{{ csrf_token }}"/>
+    <input type=hidden id="request" name="abcName" value="{{ request }}"/>
+    <input type=hidden id="secret_key" name="abcName" value="{{ company.secret_key }}"/>
+    <div id="qr-reader" style="width: 600px" type="submit"></div>
 </form>
 {% endblock %}

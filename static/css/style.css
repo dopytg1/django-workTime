@@ -138,3 +138,7 @@ a {
 .pagination {
     margin: 40px 0;
 }
+#qr-reader {
+    margin: 0 auto;
+    margin-top: 30px;
+}
