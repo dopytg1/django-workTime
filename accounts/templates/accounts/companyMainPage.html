@@ -14,15 +14,28 @@
 
         {% for each in data %}
         
-        <div class="alert alert-warning mt-5 user-from-list fs-5 text-muted col">
-            <p>Username: {{ each.member }}</p>
-            <p style="text-transform: capitalize;">{{ each.member.first_name }} {{ each.member.last_name }}</p>
-            <a href="{% url 'userWorktime' user=each.member %}" class="btn btn-primary">See stats</a>
-            <a href="{% url 'changeUser' id=each.member.id %}" class="btn btn-warning">Change user</a>
-            <a href="{% url 'deleteUser' id=each.member.id %}" class="btn btn-danger">Delete user</a>
-        </div>
+            <div class="alert alert-warning mt-5 user-from-list fs-5 text-muted col">
+                <p>Username: {{ each.member }}</p>
+                <p style="text-transform: capitalize;">{{ each.member.first_name }} {{ each.member.last_name }}</p>
+                <a href="{% url 'userWorktime' user=each.member page=1 %}" class="btn btn-primary">See stats</a>
+                <a href="{% url 'changeUser' id=each.member.id %}" class="btn btn-warning">Change user</a>
+                <a href="{% url 'deleteUser' id=each.member.id %}" class="btn btn-danger">Delete user</a>
+            </div>
          
         {% endfor %}
+    </div>
+    <div class='pagination justify-content-center'>
+        {% if data.has_previous %}
+            <a href='{% url "CompanyProfilePage" page=data.previous_page_number %}'>Previous </a>
+        {% endif %}
+
+        <span class='mx-4'>
+        Page {{ data.number }} of {{ data.paginator.num_pages }}
+        </span>
+
+        {% if data.has_next %}
+            <a href='{% url "CompanyProfilePage" page=data.next_page_number %}'>Next </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

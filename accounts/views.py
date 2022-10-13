@@ -13,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from .permissions import *
 from datetime import datetime
+from django.core.paginator import Paginator, EmptyPage
 
 
 class MemberSignUpForm(CompanyRequiredMixin , CreateView):
@@ -41,7 +42,7 @@ class LoginUser(LoginView):
 
 def redirectBasedOnUsers(request):
     if request.user.is_company == True:
-        return redirect("/accounts/company")
+        return redirect("/accounts/company/1")
     if request.user.is_member == True:
         return redirect("/accounts/member")
 
@@ -72,8 +73,13 @@ class AccountCompanyPage(CompanyRequiredMixin, LoginRequiredMixin, ListView):
         return context
 
 @company_allowed()
-def accountCompanyPage(request):
+def accountCompanyPage(request, page=1):
     data = Member.objects.filter(company_id=request.user.id)
+    paginator = Paginator(data, 6)
+    try:
+        data = paginator.page(page)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
     return render(request, "accounts/companyMainPage.html", {"data": data})
 
 
@@ -92,16 +98,30 @@ def companySetTime(request):
 
 
 @company_allowed()
-def companySeeUserStat(request, user):
+def companySeeUserStat(request, user, page=1):
     member = Member.objects.get(member__username=user)
     data = WorkTime.objects.filter(member_id=member)
+    data = data[::-1]
+    paginator = Paginator(data, 5)
+    
+    try:
+        data = paginator.page(page)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
     totalTime = 0
-    for each in data:
+    
+    ontime = 0
+    late = 0
+    for each in WorkTime.objects.filter(member_id=member):
+        if each.on_time:
+            ontime += 1
+        else:
+            late += 1
         try:
             totalTime += each.worked
         except:
             pass
-    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2)})
+    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "user": user, "ontime": ontime, "late": late})
 
 
 @company_allowed()
@@ -165,14 +185,28 @@ def createWorkTime(request):
             return redirect("/accounts/member")
     return render(request, "accounts/workTimeCreate.html", {"member": member})
 
+
 @member_allowed()
-def seeUserStats(request):
+def seeUserStats(request, page=1):
     member = Member.objects.get(member=request.user)
     data = WorkTime.objects.filter(member_id=member)
+    data = data[::-1]
+    paginator = Paginator(data, 5)
+    try:
+        data = paginator.page(page)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
     totalTime = 0
-    for each in data:
+    ontime = 0
+    late = 0
+    for each in WorkTime.objects.filter(member_id=member):
+        if each.on_time:
+            ontime += 1
+        else:
+            late += 1
         try:
             totalTime += each.worked
         except:
             pass
-    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "member": member})
+    
+    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "member": member, "ontime": ontime, "late": late})

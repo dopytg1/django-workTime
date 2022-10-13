@@ -7,6 +7,7 @@ a {
 }
 .main-page-text {
     text-align: center;
+    margin-top: 30px;
 }
 .home-page-main {
     margin-top: 100px !important;
@@ -133,4 +134,7 @@ a {
 }
 .userStats {
     margin-top: 30px;
+}
+.pagination {
+    margin: 40px 0;
 }

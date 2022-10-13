@@ -2,8 +2,10 @@
 {% load static %}
 
 {% block content %}
-<div class="userStats container">
+<div class="userStats container alert alert-warning">
     <h2>Total worktime: {{ totalTime }}</h2>
+    <h2>On time: {{ ontime }}</h2>
+    <h2>Late: {{ late }}</h2>
 </div>
 <div class="user_stats_main">
     <div class="user_stat">
@@ -54,5 +56,29 @@
         </div>
     {% endif %}
     {% endfor %}
+
+    <div class='pagination justify-content-center'>
+        {% if data.has_previous %}
+            {% if request.user.is_member %}
+                <a href='{% url "seeUserStats" data.previous_page_number %}'>Previous </a>
+            {% elif request.user.is_company %}
+                <a href='{% url "userWorktime" user=user page=data.previous_page_number %}'>Previous </a>
+            {% endif %}
+        {% endif %}
+
+        <span class='mx-4'>
+        Page {{ data.number }} of {{ data.paginator.num_pages }}
+        </span>
+
+        {% if data.has_next %}
+            {% if request.user.is_member %}
+                <a href='{% url "seeUserStats" data.next_page_number %}'>Next </a>
+            {% elif request.user.is_company %}
+                <a href='{% url "userWorktime" user=user page=data.next_page_number %}'>Next </a>
+            {% endif %}
+        {% endif %}
+    </div>
+
+</div>
 </div>
 {% endblock %}
