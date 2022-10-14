@@ -1,3 +1,4 @@
+from calendar import month
 from django.shortcuts import render
 from urllib import request
 from django.contrib.auth import login, logout
@@ -116,19 +117,13 @@ def companySetTime(request):
 @company_allowed()
 def companySeeUserStat(request, user, page=1):
     member = Member.objects.get(member__username=user)
-    data = WorkTime.objects.filter(member_id=member)
-    data = data[::-1]
-    paginator = Paginator(data, 5)
-    
-    try:
-        data = paginator.page(page)
-    except EmptyPage:
-        data = paginator.page(paginator.num_pages)
+    dt = datetime.today().month
+    data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
     totalTime = 0
     
     ontime = 0
     late = 0
-    for each in WorkTime.objects.filter(member_id=member):
+    for each in data:
         if each.on_time:
             ontime += 1
         else:
@@ -137,7 +132,15 @@ def companySeeUserStat(request, user, page=1):
             totalTime += each.worked
         except:
             pass
-    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "user": user, "ontime": ontime, "late": late})
+
+    data = data[::-1]
+    paginator = Paginator(data, 5)
+    
+    try:
+        data = paginator.page(page)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
+    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "user": user, "ontime": ontime, "late": late, "month": data[0].created_at.month })
 
 
 @company_allowed()
@@ -207,17 +210,12 @@ def createWorkTime(request):
 @member_allowed()
 def seeUserStats(request, page=1):
     member = Member.objects.get(member=request.user)
-    data = WorkTime.objects.filter(member_id=member)
-    data = data[::-1]
-    paginator = Paginator(data, 5)
-    try:
-        data = paginator.page(page)
-    except EmptyPage:
-        data = paginator.page(paginator.num_pages)
+    dt = datetime.today().month
+    data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
     totalTime = 0
     ontime = 0
     late = 0
-    for each in WorkTime.objects.filter(member_id=member):
+    for each in data:
         if each.on_time:
             ontime += 1
         else:
@@ -226,5 +224,11 @@ def seeUserStats(request, page=1):
             totalTime += each.worked
         except:
             pass
+    data = data[::-1]
+    paginator = Paginator(data, 5)
+    try:
+        data = paginator.page(page)
+    except EmptyPage:
+        data = paginator.page(paginator.num_pages)
     
     return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "member": member, "ontime": ontime, "late": late})
