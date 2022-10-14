@@ -14,10 +14,10 @@ urlpatterns = [
     path("accounts/company/<int:page>", accountCompanyPage, name='CompanyProfilePage'),
     path("accounts/company/searchUsers/", searchUsers, name='searchUsers'),
     path("accounts/company/change", companySetTime, name='setTime'),
-    path("accounts/company/<str:user>/<int:page>/", companySeeUserStat, name='userWorktime'),
+    path("accounts/company/<str:user>/<int:page>/", seeUserStats, name='userWorktime'),
     path("accounts/company/delete/<int:id>", deleteUser, name='deleteUser'),
     path("accounts/company/change/<int:id>", changeUser, name='changeUser'),
 
     path("accounts/member/create", createWorkTime, name="createWorkTime"),
-    path("accounts/member/stats/<int:page>/", seeUserStats, name="seeUserStats"),
+    path("accounts/member/<str:user>/<int:page>/", seeUserStats, name="seeUserStats"),
 ]

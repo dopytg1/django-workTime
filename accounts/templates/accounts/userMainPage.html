@@ -14,7 +14,7 @@
         <a href="{% url 'createWorkTime' %}">Scan</a>
     </div>
     <div class="main-stats">
-        <a href="{% url 'seeUserStats' page=1 %}">моя статистика</a>
+        <a href="{% url 'seeUserStats' user=member.member page=1 %}">моя статистика</a>
     </div>
     <div class="footer"> <p>v.0.0.1</p> </div>
 </div>

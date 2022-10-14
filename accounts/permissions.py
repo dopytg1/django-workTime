@@ -35,3 +35,14 @@ def member_allowed():
 				raise PermissionDenied
 		return wrapper_func
 	return decorator
+
+
+def member_or_company_allowed():
+	def decorator(view_func):
+		def wrapper_func(request, *args, **kwargs):
+			if request.user.is_member or request.user.is_company:
+				return view_func(request, *args, **kwargs)
+			else:
+				raise PermissionDenied
+		return wrapper_func
+	return decorator

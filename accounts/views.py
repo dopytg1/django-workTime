@@ -115,35 +115,6 @@ def companySetTime(request):
 
 
 @company_allowed()
-def companySeeUserStat(request, user, page=1):
-    member = Member.objects.get(member__username=user)
-    dt = datetime.today().month
-    data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
-    totalTime = 0
-    
-    ontime = 0
-    late = 0
-    for each in data:
-        if each.on_time:
-            ontime += 1
-        else:
-            late += 1
-        try:
-            totalTime += each.worked
-        except:
-            pass
-
-    data = data[::-1]
-    paginator = Paginator(data, 5)
-    
-    try:
-        data = paginator.page(page)
-    except EmptyPage:
-        data = paginator.page(paginator.num_pages)
-    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "user": user, "ontime": ontime, "late": late, "month": data[0].created_at.month })
-
-
-@company_allowed()
 def deleteUser(request, id):
     try:
         user = CustomUser.objects.get(id=id)
@@ -207,21 +178,24 @@ def createWorkTime(request):
     return render(request, "accounts/workTimeCreate.html", {"member": member, "company": member.company_id})
 
 
-@member_allowed()
-def seeUserStats(request, page=1):
-    member = Member.objects.get(member=request.user)
+@member_or_company_allowed()
+def seeUserStats(request, user, page=1):
+    member = Member.objects.get(member__username=user)
     dt = datetime.today().month
     data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
-    totalTime = 0
-    ontime = 0
-    late = 0
+    context = {
+        "totalTime": 0,
+        "ontime": 0,
+        "late": 0,
+        "member": member
+    }
     for each in data:
         if each.on_time:
-            ontime += 1
+            context["ontime"] += 1
         else:
-            late += 1
+            context["late"] += 1
         try:
-            totalTime += each.worked
+            context["totalTime"] += each.worked
         except:
             pass
     data = data[::-1]
@@ -230,5 +204,5 @@ def seeUserStats(request, page=1):
         data = paginator.page(page)
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
-    
-    return render(request, "accounts/userStat.html", {"data": data, "totalTime": round(totalTime, 2), "member": member, "ontime": ontime, "late": late})
+    context["data"] = data
+    return render(request, "accounts/userStat.html", context)
