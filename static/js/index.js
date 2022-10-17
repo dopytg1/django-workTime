@@ -8,11 +8,10 @@ function onScanSuccess(decodedText, decodedResult) {
         xhr.open("POST", "/accounts/member/create");
         xhr.setRequestHeader('X-CSRFToken', csrfToken)
         xhr.send(request)
-        xhr.timeout = 3000;
         window.location.href = "/accounts/member"
         
     }
 }
-var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 1, qrbox: 250 });
 
 html5QrcodeScanner.render(onScanSuccess);
