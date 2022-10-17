@@ -1,9 +1,10 @@
 from django.core.paginator import Paginator, EmptyPage
 from django.shortcuts import redirect
+from django.db.models import F
 
 from .models import Member, WorkTime
 
-from datetime import datetime
+import datetime
 
 def change_user(user, request):
     user.username = request.POST.get('username')
@@ -23,7 +24,7 @@ def company_set_time(company, request):
 
 
 def see_user_stats(member, request, page):
-    dt = datetime.today().month
+    dt = datetime.datetime.today().month
     data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
     context = {
         "totalTime": 0,
@@ -31,6 +32,10 @@ def see_user_stats(member, request, page):
         "late": 0,
         "member": member
     }
+    return fill_context_user_stat(context, data, page)
+
+
+def fill_context_user_stat(context, data, page):
     for each in data:
         if each.on_time:
             context["ontime"] += 1
@@ -40,6 +45,7 @@ def see_user_stats(member, request, page):
             context["totalTime"] += each.worked
         except:
             pass
+    context["totalTime"] = datetime.timedelta(seconds=round(context["totalTime"] * 60))
     data = data[::-1]
     paginator = Paginator(data, 5)
     try:
@@ -47,7 +53,7 @@ def see_user_stats(member, request, page):
     except EmptyPage:
         data = paginator.page(paginator.num_pages)
     context["data"] = data
-    context['member'] = member
+    # context['member'] = member
     return context
 
 
@@ -67,7 +73,7 @@ def work_time_not_exist(member, request):
     workTime = WorkTime()
     workTime.company_id = member.company_id
     workTime.member_id = request.user.member
-    workTime.start_time = datetime.now().strftime("%H:%M")
+    workTime.start_time = datetime.datetime.now().strftime("%H:%M")
     workTime.save()
     action = WorkTime.objects.get(flag=False, member_id=member)
     company = action.company_id
@@ -80,10 +86,13 @@ def work_time_not_exist(member, request):
 
 
 def work_time_exist(workTime, member, request):
-    workTime.end_time = datetime.now().strftime("%H:%M")
+    workTime.end_time = datetime.datetime.now().strftime("%H:%M")
     workTime.flag = True
     workTime.save()
     action = WorkTime.objects.get(worked=None, flag=True, member_id=member)
-    action.worked = abs(round(((action.end_time.hour*60 + action.end_time.minute) - (action.start_time.hour*60 + action.start_time.minute)) / 60, 2))
+    worked = abs(round(((action.end_time.hour*60 + action.end_time.minute) - (action.start_time.hour*60 + action.start_time.minute)) / 60, 2))
+    action.worked = worked
+    member.totalWorkTime = F("totalWorkTime") + worked
+    member.save()
     action.save()
     return redirect("/accounts/member")

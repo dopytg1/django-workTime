@@ -9,7 +9,7 @@
     <title>{% block title %} {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <style>
         label {
             display: block;
@@ -38,14 +38,28 @@
             <ul class="navbar-nav mb-2 nav-right-main">
 
               <div class="nav-right">
-                {% if request.user.is_authenticated %}
+                {% if request.user.is_authenticated and request.user.is_member %}
                   <li class="nav-item">
                       <a class="nav-link active" aria-current="page" href="{% url 'UserProfileRedirectPage' %}">Home</a>
                   </li>
-                {% endif %}
-                {% if request.user.is_authenticated %}
                   <li class="nav-item">
                       <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
+                {% elif request.user.is_authenticated and request.user.is_company %}
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        menu
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'mem_signup' %}">Sign up your members</a></li>
+                        <li><a class="dropdown-item" href="{% url 'searchUsers' %}">Search users</a></li>
+                        <li><a class="dropdown-item" href="{% url 'totalStats' %}">See the statistic</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url 'UserProfileRedirectPage' %}">Home</a>
+                    </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
                 {% else %}
                       <a class="nav-link active" href="{% url 'login' %}">Login</a>
                   </li>
@@ -54,10 +68,6 @@
               
             
             </ul>
-            <!-- <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> -->
           </div>
         </div>
       </nav>

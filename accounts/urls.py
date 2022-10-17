@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import MemberSignUpForm, CompanySignUpForm, LoginUser, redirectBasedOnUsers, logoutUser, homePage, accountMemberPage, AccountCompanyPage, searchUsers, accountCompanyPage, companySetTime, deleteUser, changeUser, createWorkTime, seeUserStats
+from .views import MemberSignUpForm, CompanySignUpForm, LoginUser, redirectBasedOnUsers, logoutUser, homePage, accountMemberPage, AccountCompanyPage, searchUsers, accountCompanyPage, companySetTime, deleteUser, changeUser, createWorkTime, seeUserStats, totalStats
 
 urlpatterns = [
     path("members/sign-up", MemberSignUpForm.as_view(), name="mem_signup"),
@@ -16,6 +16,7 @@ urlpatterns = [
     path("accounts/company/<str:user>/<int:page>/", seeUserStats, name='userWorktime'),
     path("accounts/company/delete/<int:id>", deleteUser, name='deleteUser'),
     path("accounts/company/change/<int:id>", changeUser, name='changeUser'),
+    path("accounts/company/users-statistic", totalStats, name="totalStats"),
 
     path("accounts/member", accountMemberPage, name='UserProfilePage'),
     path("accounts/member/create", createWorkTime, name="createWorkTime"),

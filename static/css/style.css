@@ -1,5 +1,6 @@
 body {
     background-color: #aaaaaa !important;
+    overflow-x: hidden;
 }
 a {
     color: blue;
@@ -131,7 +132,8 @@ a {
     margin: 20px 0;
 }
 .stat_main {
-    display: block;
+    display: flex;
+    justify-content: center;
     width: 100%;
     text-align: center;
 }
@@ -151,4 +153,19 @@ a {
 }
 .set-time-companies {
     margin-top: 20px;
+}
+.arrows {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    font-size: calc(1.275rem + .3vw); color: black;
+    display: inline-block;
+}
+.stat_text {
+    font-size: calc(1.275rem + .3vw); 
+    color: black;
 }

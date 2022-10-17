@@ -1,3 +1,4 @@
+from ast import Return
 from operator import imod
 from django.shortcuts import render
 from django.contrib.auth import login, logout
@@ -59,7 +60,7 @@ def logoutUser(request):
     
 
 def homePage(request):
-    return render(request, "accounts/home.html", {"hello": "hello"})
+    return render(request, "accounts/home.html", {})
 
 
 @member_allowed()
@@ -151,3 +152,12 @@ def seeUserStats(request, user, page=1):
     member = Member.objects.get(member__username=user)
     context = see_user_stats(member, request, page)
     return render(request, "accounts/userStat.html", context)
+
+
+def totalStats(request):
+    members = Member.objects.filter(company_id=request.user.id).order_by("-totalWorkTime")
+    if request.method == "POST":
+        members = members[::-1]
+        return render(request, "accounts/totalStatistic.html", {"members": members})
+
+    return render(request, "accounts/totalStatistic.html", {"members": members})

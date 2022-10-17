@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
@@ -29,6 +30,7 @@ class Member(models.Model):
     member = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     company_id = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     description = models.TextField(blank=True, null=True)
+    totalWorkTime = models.IntegerField(null=True, default=0)
 
 
 class WorkTime(models.Model):

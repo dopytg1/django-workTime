@@ -4,19 +4,21 @@
 
 {% block content %}
 <div class="main-company-page-interact">
-    <a href="{% url 'setTime' %}" class="set-time-companies btn btn-primary">set time and your private key (important)</a>
-    <a href="{% url 'mem_signup' %}" class="set-time-companies btn btn-primary">Sign up your members</a>
+    <a href="{% url 'setTime' %}" class="set-time-companies btn btn-primary">set time and your private key <span style="color: rgb(189, 218, 26); font-weight: bold;">(important)</span></a>
+    <!-- <a href="{% url 'mem_signup' %}" class="set-time-companies btn btn-primary">Sign up your members</a>
     <a href="{% url 'searchUsers' %}" class="set-time-companies btn btn-primary">Search users</a>
+    <a href="{% url 'searchUsers' %}" class="set-time-companies btn btn-primary">See the statistic</a> -->
 </div>
 
 <div class="main-user-list ">
-    <h1>Users</h1>
+    <h1>Your members:</h1>
     <div class="row row-cols-1 row-cols-md-2  row-cols-lg-3 row-cols-xl-2 g-4">
         {% for each in data %}
         
             <div class="alert alert-warning mt-5 user-from-list fs-5 text-muted col">
 
                 <p>Username: {{ each.member }}</p>
+                <p>email: {{ each.member.email }}</p>
                 <p style="text-transform: capitalize;">{{ each.member.first_name }} {{ each.member.last_name }}</p>
                 <a href="{% url 'userWorktime' user=each.member page=1 %}" class="btn btn-primary">See stats</a>
                 <a href="{% url 'changeUser' id=each.member.id %}" class="btn btn-warning">Change user</a>
