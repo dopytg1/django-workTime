@@ -8,6 +8,7 @@ function onScanSuccess(decodedText, decodedResult) {
         xhr.open("POST", "/accounts/member/create");
         xhr.setRequestHeader('X-CSRFToken', csrfToken)
         xhr.send(request)
+        xhr.timeout = 3000;
         window.location.href = "/accounts/member"
         
     }

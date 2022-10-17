@@ -1,20 +1,25 @@
-from calendar import month
+from operator import imod
 from django.shortcuts import render
-from urllib import request
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.views.generic import CreateView, ListView, View
 from django.contrib.auth.views import LoginView
-
-from .forms import MemberCreationForm, LoginUserForm, CompanyCreationForm
-from .models import Company, CustomUser, WorkTime, Member
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
-from .permissions import *
-from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage
+
+from .forms import MemberCreationForm, LoginUserForm, CompanyCreationForm
+from .models import Company, CustomUser, WorkTime, Member
+from .permissions import CompanyRequiredMixin, company_allowed, MemberRequiredMixin, member_allowed, member_or_company_allowed
+from .services import change_user, company_set_time, see_user_stats, create_work_time
+
+
+from calendar import month
+from urllib import request
+from datetime import datetime
+
 
 
 class MemberSignUpForm(CompanyRequiredMixin , CreateView):
@@ -84,7 +89,6 @@ def searchUsers(request):
 
         return render(request, "accounts/searchUsers.html", {"searched": searched, "data": data})
     else:
-        # data = Member.objects.filter(description__contains="firstname")
         return render(request, "accounts/searchUsers.html", {})
 
 
@@ -104,11 +108,7 @@ def companySetTime(request):
     error = ''
     company = Company.objects.get(company_id=request.user.id)
     if request.method == 'POST':
-        company.start_time = request.POST.get("start_time")
-        company.end_time = request.POST.get("end_time")
-        company.secret_key = request.POST.get("secret_key")
-        company.save()
-
+        company_set_time(company, request)
         return redirect("/accounts/company/1")
     else:
         return render(request, "accounts/companySetTime.html", {"error": error, "company": company})
@@ -130,13 +130,7 @@ def changeUser(request, id):
         user = CustomUser.objects.get(id=id)
 
         if request.method == 'POST':
-            user.username = request.POST.get('username')
-            user.first_name = request.POST.get('first_name')
-            user.last_name = request.POST.get('last_name')
-            user.save()
-            member = Member.objects.get(member=user)
-            member.description = request.POST.get('username') + request.POST.get('first_name') + request.POST.get('last_name') + user.email
-            member.save()
+            change_user(user, request)
             return redirect("/accounts/company/1")
         else:
             return render(request, "accounts/userChange.html", {"task": user})
@@ -148,61 +142,12 @@ def changeUser(request, id):
 @member_allowed()
 def createWorkTime(request):
     member = Member.objects.get(member=request.user.id)
-    try:
-        workTime = WorkTime.objects.get(flag=False, member_id=member)
-    except:
-        workTime = False
-    if request.method == "POST":
-        if workTime:
-            workTime.end_time = datetime.now().strftime("%H:%M")
-            workTime.flag = True
-            workTime.save()
-            action = WorkTime.objects.get(worked=None, flag=True, member_id=member)
-            action.worked = abs(round(((action.end_time.hour*60 + action.end_time.minute) - (action.start_time.hour*60 + action.start_time.minute)) / 60, 2))
-            action.save()
-            return redirect("/accounts/member")
-        else:
-            workTime = WorkTime()
-            workTime.company_id = member.company_id
-            workTime.member_id = request.user.member
-            workTime.start_time = datetime.now().strftime("%H:%M")
-            workTime.save()
-            action = WorkTime.objects.get(flag=False, member_id=member)
-            company = action.company_id
-            if action.start_time > company.start_time:
-                action.on_time = False
-            else:
-                action.on_time = True
-            action.save()
-            return redirect("/accounts/member")
+    create_work_time(member, request)
     return render(request, "accounts/workTimeCreate.html", {"member": member, "company": member.company_id})
 
 
 @member_or_company_allowed()
 def seeUserStats(request, user, page=1):
     member = Member.objects.get(member__username=user)
-    dt = datetime.today().month
-    data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
-    context = {
-        "totalTime": 0,
-        "ontime": 0,
-        "late": 0,
-        "member": member
-    }
-    for each in data:
-        if each.on_time:
-            context["ontime"] += 1
-        else:
-            context["late"] += 1
-        try:
-            context["totalTime"] += each.worked
-        except:
-            pass
-    data = data[::-1]
-    paginator = Paginator(data, 5)
-    try:
-        data = paginator.page(page)
-    except EmptyPage:
-        data = paginator.page(paginator.num_pages)
-    context["data"] = data
+    context = see_user_stats(member, request, page)
     return render(request, "accounts/userStat.html", context)

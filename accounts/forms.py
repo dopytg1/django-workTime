@@ -1,13 +1,13 @@
-from dataclasses import fields
-from urllib import request
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.db import transaction
 from django.forms import ModelForm, TextInput, Textarea
-from .models import *
-from django.urls import reverse,reverse_lazy
+
+from .models import CustomUser, Company, Member, WorkTime
+from dataclasses import fields
+from urllib import request
 
 class MemberCreationForm(UserCreationForm):
     def __init__(self, company, *args, **kwargs):

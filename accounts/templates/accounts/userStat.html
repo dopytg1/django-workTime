@@ -60,9 +60,9 @@
     <div class='pagination justify-content-center'>
         {% if data.has_previous %}
             {% if request.user.is_member %}
-                <a href='{% url "seeUserStats" data.previous_page_number %}'>Previous </a>
+                <a href='{% url "seeUserStats" user=user page=data.previous_page_number %}'>Previous </a>
             {% elif request.user.is_company %}
-                <a href='{% url "userWorktime" user=user page=data.previous_page_number %}'>Previous </a>
+                <a href='{% url "userWorktime" user=member.member page=data.previous_page_number %}'>Previous </a>
             {% endif %}
         {% endif %}
 
@@ -72,9 +72,9 @@
 
         {% if data.has_next %}
             {% if request.user.is_member %}
-                <a href='{% url "seeUserStats" data.next_page_number %}'>Next </a>
+                <a href='{% url "seeUserStats" user=user page=data.next_page_number %}'>Next </a>
             {% elif request.user.is_company %}
-                <a href='{% url "userWorktime" user=user page=data.next_page_number %}'>Next </a>
+                <a href='{% url "userWorktime" user=member.member page=data.next_page_number %}'>Next </a>
             {% endif %}
         {% endif %}
     </div>
