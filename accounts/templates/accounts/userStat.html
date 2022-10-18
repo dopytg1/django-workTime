@@ -2,10 +2,26 @@
 {% load static %}
 
 {% block content %}
+<div class="mt-5">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="dateFormMain">
+            <input id="startDate" class="form-control" type="date" name="start_time"/>
+            <input id="startDate" class="form-control" type="date" name="end_time"/>
+            <button type="submit" class="btn btn-primary">submit</button>
+        </div>
+    </form>
+</div>
 <div class="userStats container alert alert-warning">
-    <h2>Total worktime: {{ totalTime }}</h2>
-    <h2>On time: {{ ontime }}</h2>
-    <h2>Late: {{ late }}</h2>
+    <h2 class="title-user-stat">Total worktime: {{ totalTime }}</h2>
+    <div class="user-stat-line">
+        <div class="user-line" id="on_time_line" ></div>
+        <div class="user-line" id="late_line" ></div>
+    </div>
+    <div class="user-attendance">
+        <h2>On time: <span id="on_time">{{ ontime }}</span></h2>
+        <h2>Late: <span id="late">{{ late }}</span></h2>
+    </div>
 </div>
 <div class="user_stats_main">
     <div class="user_stat">

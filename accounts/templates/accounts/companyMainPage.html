@@ -18,7 +18,7 @@
             <div class="alert alert-warning mt-5 user-from-list fs-5 text-muted col">
 
                 <p>Username: {{ each.member }}</p>
-                <p>email: {{ each.member.email }}</p>
+                <p>{{ each.member.email }}</p>
                 <p style="text-transform: capitalize;">{{ each.member.first_name }} {{ each.member.last_name }}</p>
                 <a href="{% url 'userWorktime' user=each.member page=1 %}" class="btn btn-primary">See stats</a>
                 <a href="{% url 'changeUser' id=each.member.id %}" class="btn btn-warning">Change user</a>

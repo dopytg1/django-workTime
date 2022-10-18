@@ -25,7 +25,13 @@ def company_set_time(company, request):
 
 def see_user_stats(member, request, page):
     dt = datetime.datetime.today().month
-    data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
+    if request.method == "POST":
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+
+        data = WorkTime.objects.filter(member_id=member, created_at__gte=start_time, created_at__lte=end_time)
+    else:
+        data = WorkTime.objects.filter(member_id=member, created_at__month=dt)
     context = {
         "totalTime": 0,
         "ontime": 0,
